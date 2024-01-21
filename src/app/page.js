@@ -1,24 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import copy from "clipboard-copy";
 
 export default function Home() {
-  const router = useRouter();
-  const textCopied = useState(false);
+  const [textCopied, setTextCopied] = useState(false);
+
+  const searchParams = useSearchParams();
+  const queryText = searchParams.get("text");
 
   useEffect(() => {
-    const { text } = router.query || {};
-
-    if (text) {
-      copy(text);
-
-      // Wait for a moment before closing the page
+    const closeTab = () => {
       setTimeout(() => {
+        console.log("CLOSED!");
         window.close();
       }, 1000);
+    };
+
+    if (queryText) {
+      navigator.clipboard.writeText(queryText).then(() => {
+        setTextCopied(true);
+        closeTab(); // Call the closeTab function
+      });
     }
-  }, [router.isReady]);
+  }, [queryText]);
 
   return (
     <div className="flex flex-col text-center h-[100vh] justify-between p-8">
