@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import copy from "clipboard-copy";
 
 export default function Home() {
   const [textCopied, setTextCopied] = useState(false);
